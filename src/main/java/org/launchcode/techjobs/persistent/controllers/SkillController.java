@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -30,6 +31,7 @@ public class SkillController {
     @GetMapping("add")
     public String displayAddSkillForm(Model model) {
         model.addAttribute(new Skill());
+        model.addAttribute("skills", skillRepository.findAll());
         return "skills/add";
     }
 
@@ -40,11 +42,8 @@ public class SkillController {
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Skill");
             return "skills/add";
-        } else {
-            skillRepository.save(newSkill);
-            model.addAttribute("skill",newSkill);
-
         }
+            skillRepository.save(newSkill);
 
         return "redirect:";
     }
@@ -52,9 +51,8 @@ public class SkillController {
     @GetMapping("view/{skillId}")
     public String displayViewSkill(Model model, @PathVariable int skillId) {
 
-
-        if (skillId >=0) {
-
+        Optional<Skill> optSkill = skillRepository.findById(skillId);
+        if (optSkill.isPresent()) {
             model.addAttribute("skill", skillRepository.findById(skillId));
             return "skill/view";
         } else {

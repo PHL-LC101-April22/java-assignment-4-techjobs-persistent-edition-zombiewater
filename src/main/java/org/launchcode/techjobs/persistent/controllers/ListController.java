@@ -34,6 +34,7 @@ public class ListController {
     public ListController () {
 
         columnChoices.put("all", "All");
+        columnChoices.put("job", "Job");
         columnChoices.put("employer", "Employer");
         columnChoices.put("skill", "Skill");
 
@@ -41,9 +42,8 @@ public class ListController {
 
     @RequestMapping("")
     public String list(Model model) {
-//        model.addAttribute("all", "All");
-        model.addAttribute("employer", employerRepository.findAll());
-        model.addAttribute("skill", skillRepository.findAll());
+        model.addAttribute("employers", employerRepository.findAll());
+        model.addAttribute("skills", skillRepository.findAll());
 
         return "list";
     }
